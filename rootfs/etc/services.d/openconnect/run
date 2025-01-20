@@ -47,7 +47,7 @@ echo "Starting openconnect..."
 (
   echo -e "${PASSWORD}\n${GROUP}\n${TOKEN}\n"
   read -s
-) | openconnect ${SERVER} --pid-file=${OC_PID} --user=${USERNAME} --passwd-on-stdin --no-dtls
+) | openconnect ${SERVER} --pid-file=${OC_PID} --user=${USERNAME} --passwd-on-stdin --no-dtls ${SERVER_CERT:+--servercert ${SERVER_CERT}}
 
 sleep infinity &
 
