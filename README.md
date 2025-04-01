@@ -1,4 +1,5 @@
 # AnyConnect, Pulse and PAN container with proxies
+
 ## Changelog
 
 - v20230405: Add an override OpenSSL3 configuration to get around `routines::unsafe legacy renegotiation disabled` error.
@@ -38,6 +39,7 @@ DOCKER_BUILDKIT=1 docker build --build-arg S6_OVERLAY_VERSION="3.1.4.2" -t ducmt
 ```
 
 Alternatively, use `docker-compose build`:
+
 ```Shell
 COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build --build-arg S6_OVERLAY_VERSION="3.1.4.2"
 ```
@@ -77,11 +79,14 @@ FILE__PASSWORD=/vpn/passwd
 ```
 
 ### Create a docker network
+
 Before starting the container, please create a docker network for it:
 
 ```Shell
 docker network create openconnect --subnet=10.30.0.1/16
+# or maybe --subnet=192.168.100.0/24
 ```
+
 ### Start with `docker run`
 
 ```Shell
@@ -117,6 +122,7 @@ docker-compose up -d
 ```
 
 ### Supplying token
+
 Token is taken from the file `/vpn/token` within the container. If `DYNAMIC_TOKEN` is `true` then the container clears the file after reading. To supply the dynamic OTP, simply do this outside the container:
 
 ```Shell
@@ -128,5 +134,17 @@ echo OTP_HERE > ./vpntoken
 Set your proxy to socks5://127.0.0.1:${PROXY_PORT}. Use Socks5 username and password if set.
 
 ## Tested environments
+
 - Raspberry Pi 4 B+ (4GB model)
 - WSL 2 + Docker WSL2 + Proxifier
+
+## Troubleshooting
+
+https://stackoverflow.com/questions/39130263/docker-proxy-using-port-when-no-containers-are-running
+
+```Shell
+sudo docker network rm openconnect
+sudo docker network create openconnect --subnet=192.168.100.0/24
+sudo service docker stop
+sudo rm -f /var/lib/docker/network/files/local-kv.db
+```
