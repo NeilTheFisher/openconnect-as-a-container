@@ -8,9 +8,8 @@ set /p otp=  "Enter OTP: "  %
 
 @echo on
 
-wsl bash -c "cd ~/repos/openconnect-as-a-container && sudo docker compose kill && sudo docker compose down"
-wsl bash -c "cd ~/repos/openconnect-as-a-container && echo %otp% > vpntoken && sudo docker compose up -d && sudo docker compose logs --follow"
-wsl bash -c "cd ~/repos/openconnect-as-a-container && sudo docker compose kill && sudo docker compose down"
+wsl sudo bash -c "docker network rm openconnect && docker network create openconnect --subnet=192.168.100.0/24 && cd /home/neil/repos/openconnect-as-a-container && docker compose kill && docker compose down && echo %otp% > vpntoken && docker compose up -d && docker compose logs --follow"
+wsl sudo bash -c "docker compose kill && docker compose down"
 
 @echo off
 

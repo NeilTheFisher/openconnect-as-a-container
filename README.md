@@ -148,3 +148,6 @@ sudo docker network create openconnect --subnet=192.168.100.0/24
 sudo service docker stop
 sudo rm -f /var/lib/docker/network/files/local-kv.db
 ```
+
+Running openconnect-gui after running this may be broken:
+https://gitlab.com/openconnect/openconnect-gui/-/issues/25#note_2141788897
